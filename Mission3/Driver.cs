@@ -15,6 +15,8 @@ namespace Mission3
             // Play the game
             Play(Board);
         }
+        
+        // Begin Game
         static string[] Start()
         {
             // Create game board
@@ -24,6 +26,8 @@ namespace Mission3
 
             return GameBoard;
         }
+        
+        // Play Game
         static void Play(string[] Board)
         {
             int Player = 1;
@@ -61,6 +65,7 @@ namespace Mission3
                     // Check for a winner
                     Winner = supporting.Winner(Board)[0];
 
+                    // Check for a draw
                     if (Round == 8 && Winner == "false")
                     {
                         Winner = "draw";
@@ -70,8 +75,10 @@ namespace Mission3
                     Player += 1;
                 }
 
+                // Announce outcome
                 if (Winner == "draw")
                 {
+                    // Draw
                     Console.WriteLine("Are you both equally good, or both equally bad? The game was a draw.");
                     Round += 1;
                 }
@@ -83,6 +90,8 @@ namespace Mission3
                 }
             }
         }
+        
+        // Play subfunction to make a move
         static string[] MakeMove(string[] GameBoard, int Player)
         {
             string[] Guesses = GameBoard;
