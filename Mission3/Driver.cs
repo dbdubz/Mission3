@@ -1,25 +1,23 @@
 ﻿using System;
 
+// Group 2-1: Dalyn Baldin, Spencer Cable, Holly Lambert, Koleton Murray, Doug Regehr
+
 namespace Mission3
 {
     class Driver
     {
+        // Do stuff
         static void Main(string[] args)
         {
-            string Winner = "false";
+            // Initialize game board
             string[] Board = Start();
 
-            while (Winner == "false")
-            {
-                Play(Board);
-                Winner = Supporting.Winner()[0];
-            }
-
-            Console.WriteLine($"Congratuations, {Supporting.Winner()[1]}");
+            // Play the game
+            Play(Board);
         }
-
         static string[] Start()
         {
+            // Create game board
             string[] GameBoard = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
             Console.WriteLine("Welcome to the game!");
@@ -30,11 +28,15 @@ namespace Mission3
         {
             int Player = 1;
             int ActivePlayer;
+            string Winner = "false";
 
-            Supporting.PrintBoard(Board);
+            // New supporting instance
+            Supporting supporting = new Supporting();
 
-            while (Player < 10)
+            // Loop until there is a winner
+            while (Winner == "false")
             {
+                // Alternate players
                 if (Player % 2 == 0)
                 {
                     ActivePlayer = 2;
@@ -43,16 +45,34 @@ namespace Mission3
                 {
                     ActivePlayer = 1;
                 }
+
+                // Print the board
+                supporting.printBoard(Board);
+
+                // Player makes a guess
                 string[] Guesses = MakeMove(Board, ActivePlayer);
+
+                // Updated board
                 Board = Guesses;
+
+                // Check for a winner
+                Winner = supporting.Winner(Board)[0];
+
                 Player += 1;
             }
+
+            // Congratulate winner
+            Console.WriteLine($"\nCongratuations, {supporting.Winner(Board)[1]}");
         }
         static string[] MakeMove(string[] GameBoard, int Player)
         {
             string[] Guesses = GameBoard;
             string Letter;
+            int Guess;
+            bool GoodInput;
+            bool GoodNumber;
 
+            // Assign letter to a player
             if (Player == 1)
             {
                 Letter = "X";
@@ -62,10 +82,39 @@ namespace Mission3
                 Letter = "O";
             }
 
+            // Get a guess
             Console.Write($"Where do you want to place your {Letter}? ");
-            int Guess = Convert.ToInt32(Console.ReadLine());
 
-            Guesses[Guess - 1] = Letter;
+            // Set Input validation
+            GoodInput = false;
+            GoodNumber = false;
+
+            // Perform input validation
+            while (!GoodInput)
+            {
+                try
+                {
+                    while (!GoodNumber)
+                    {
+                        Guess = Convert.ToInt32(Console.ReadLine());
+                        if (Guess > 0 || Guess < 10)
+                        {
+                            Guesses[Guess - 1] = Letter;
+                            GoodInput = true;
+                            GoodNumber = true;
+                        }
+                        else
+                        {
+                            Console.Write($"{Letter}, please put a number from 1-9: ");
+                        }
+                    }
+                }
+                catch
+                {
+                    Console.Write($"{Letter}, please put a number from 1-9: ");
+                }
+            }
+
 
             return Guesses;
         }
