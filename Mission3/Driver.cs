@@ -27,42 +27,61 @@ namespace Mission3
         static void Play(string[] Board)
         {
             int Player = 1;
+            int Round = 0;
             int ActivePlayer;
             string Winner = "false";
 
             // New supporting instance
             Supporting supporting = new Supporting();
 
-            // Loop until there is a winner
-            while (Winner == "false")
+            while (Round < 9)
             {
-                // Alternate players
-                if (Player % 2 == 0)
+                // Loop until there is a winner
+                while (Winner == "false")
                 {
-                    ActivePlayer = 2;
+                    // Alternate players
+                    if (Player % 2 == 0)
+                    {
+                        ActivePlayer = 2;
+                    }
+                    else
+                    {
+                        ActivePlayer = 1;
+                    }
+
+                    // Print the board
+                    supporting.printBoard(Board);
+
+                    // Player makes a guess
+                    string[] Guesses = MakeMove(Board, ActivePlayer);
+
+                    // Updated board
+                    Board = Guesses;
+
+                    // Check for a winner
+                    Winner = supporting.Winner(Board)[0];
+
+                    if (Round == 8 && Winner == "false")
+                    {
+                        Winner = "draw";
+                    }
+
+                    Round += 1;
+                    Player += 1;
+                }
+
+                if (Winner == "draw")
+                {
+                    Console.WriteLine("Are you both equally good, or both equally bad? The game was a draw.");
+                    Round += 1;
                 }
                 else
                 {
-                    ActivePlayer = 1;
+                    // Congratulate winner
+                    Console.WriteLine($"\nCongratuations, {supporting.Winner(Board)[1]}");
+                    Round = 9;
                 }
-
-                // Print the board
-                supporting.printBoard(Board);
-
-                // Player makes a guess
-                string[] Guesses = MakeMove(Board, ActivePlayer);
-
-                // Updated board
-                Board = Guesses;
-
-                // Check for a winner
-                Winner = supporting.Winner(Board)[0];
-
-                Player += 1;
             }
-
-            // Congratulate winner
-            Console.WriteLine($"\nCongratuations, {supporting.Winner(Board)[1]}");
         }
         static string[] MakeMove(string[] GameBoard, int Player)
         {
