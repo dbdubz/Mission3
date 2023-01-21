@@ -99,9 +99,16 @@ namespace Mission3
                         Guess = Convert.ToInt32(Console.ReadLine());
                         if (Guess > 0 || Guess < 10)
                         {
-                            Guesses[Guess - 1] = Letter;
-                            GoodInput = true;
-                            GoodNumber = true;
+                            if (Guesses[Guess - 1] == "X" || Guesses[Guess -1 ] == "O")
+                            {
+                                Console.Write($"Spot taken by {Guesses[Guess - 1]}. Try another: ");
+                            }
+                            else
+                            {
+                                Guesses[Guess - 1] = Letter;
+                                GoodInput = true;
+                                GoodNumber = true;
+                            }
                         }
                         else
                         {
